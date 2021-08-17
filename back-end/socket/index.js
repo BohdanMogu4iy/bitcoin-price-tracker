@@ -1,4 +1,4 @@
-const socketConfig = require("../config").socket
+const socketConfig = require("../config").SOCKET
 const connectionHandler = require("./handlers/connectionHandler")
 
 const initSocketIO = io => {

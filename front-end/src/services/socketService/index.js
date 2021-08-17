@@ -3,8 +3,8 @@ import config from "@config"
 import registerSocketHandlers from "./handlers";
 
 const socketClient = io(
-    config.socket.URL,
-    config.socket.ops
+    config.SOCKET.URL,
+    config.SOCKET.ops
 )
 
 registerSocketHandlers(socketClient)

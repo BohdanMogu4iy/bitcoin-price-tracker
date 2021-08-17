@@ -1,8 +1,7 @@
-const socketConfig = require("../../config").socket
-const connectedEmitter = require("./connectedEmitter")
+const socketConfig = require("../../config").SOCKET
 
 module.exports = {
     CONNECTED: socket => {
-        socket.emit(socketConfig.events.CONNECTED, connectedEmitter(socket))
+        socket.emit(socketConfig.events.CONNECTED, {})
     }
 }

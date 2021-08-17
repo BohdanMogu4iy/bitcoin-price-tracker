@@ -1,7 +1,5 @@
-import connectedHandler from "@services/socketService/handlers/connectedHandler";
-
 const config = {
-    socket: {
+    SOCKET: {
         URL: process.env.REACT_APP_SERVER_HOST,
         ops: {
             autoConnect: false,
@@ -11,16 +9,17 @@ const config = {
         events: {
             CONNECTED: "connected",
             INTERVAL_UPDATE: "interval:update",
-            PRICE_UPDATE: "price:update"
-        },
-        emit: {
-
-        },
-        handle: {
-            CONNECTED: socket => {
-                return [config.socket.events.CONNECTED, connectedHandler]
-            }
+            INTERVAL_NEW: "interval:new",
+            PRICE_UPDATE: "price:update",
+            CONNECT_ERROR: "connect_error"
         }
+    },
+    CRYPTOCURRENCY_PRICE_API: {
+        url: process.env.REACT_APP_CRYPTOCURRENCY_API_HOST,
+        endpoints: {
+            getPriceData: new URL('/cryptocurrency/', process.env.REACT_APP_CRYPTOCURRENCY_API_HOST).href
+        }
+
     }
 }
 

@@ -1,13 +1,21 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import {ContextCryptocurrency} from "@storage/Cryptocurrency";
 
-const ScanInterval = () => {
+const ScanInterval = ({changeHandler}) => {
+    const cryptocurrencyContext = useContext(ContextCryptocurrency)
+
+    const onChange = e => {
+        changeHandler(e)
+    }
+
     return (
         <>
-            <select name="interval">
-                <option value="60">1 minute</option>
-                <option value="1800">30 minutes</option>
-                <option value="3600">1 hour</option>
-                <option value="86400">1 day</option>
+            <select name="interval" onChange={onChange} value={cryptocurrencyContext.state.interval}>
+                <option value="1">1 minute</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="1440">1 day</option>
+                <option value="0" hidden={cryptocurrencyContext.state.interval !== 0}>Choose Interval</option>
             </select>
         </>
     )
