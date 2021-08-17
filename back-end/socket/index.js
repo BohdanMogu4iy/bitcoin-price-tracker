@@ -1,7 +1,8 @@
-const socketConfig = require("express/lib/router");
+const socketConfig = require("../config").socket
+const connectionHandler = require("./handlers/connectionHandler")
 
 const initSocketIO = io => {
-    io.on(...socketConfig.handle.CONNECTION(io))
+    io.on(socketConfig.events.CONNECTION, connectionHandler(io))
 }
 
 module.exports = initSocketIO

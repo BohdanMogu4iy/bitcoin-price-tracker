@@ -40,15 +40,11 @@ initSocketIO(io)
  */
 
 async function start() {
-    await function () {
+    await function(){
         server.listen(port)
         server.on('error', onError)
         server.on('listening', onListening)
     }()
-        .catch(error => {
-                console.log(`Error: ${error}`)
-            }
-        )
 }
 
 start()
@@ -110,5 +106,5 @@ function onListening() {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Server is listening on ' + bind);
+    console.log('Server is listening on ' + bind);
 }

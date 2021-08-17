@@ -1,11 +1,13 @@
-const socketConfig = require("../../config").socket
+const socketEmitter = require("../../emitter")
+const socketConfig = require("../../../config").socket
+const disconnectHandler = require("../disconnectHandler")
 
 const connectionHandler = io => {
     return async socket => {
-        socket.emit(...socketConfig.emit.CONNECTED(socket))
+        socketEmitter.CONNECTED(socket)
         console.log(`user connected\n\ton socket: ${socket.id}`)
 
-        socket.on(...socketConfig.handle.DISCONNECT(socket))
+        socket.on(socketConfig.events.DISCONNECT, disconnectHandler(socket))
     }
 }
 
