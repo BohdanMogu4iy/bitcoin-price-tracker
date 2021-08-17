@@ -4,7 +4,7 @@ import {
     Route,
     BrowserRouter
 } from "react-router-dom";
-import CryptocurrencyTracker from "../pages/CryptocurrencyTracker";
+import CryptocurrencyTracker from "@pages/CryptocurrencyTracker";
 
 const AppRouter = () => {
     return (
