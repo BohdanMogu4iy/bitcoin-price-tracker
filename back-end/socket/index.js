@@ -1,7 +1,7 @@
-const initListeners = require("../socket/listeners")
+const socketConfig = require("express/lib/router");
 
 const initSocketIO = io => {
-    initListeners(io)
+    io.on(...socketConfig.handle.CONNECTION(io))
 }
 
 module.exports = initSocketIO
