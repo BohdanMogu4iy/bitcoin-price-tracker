@@ -10,6 +10,9 @@ const debug = require('debug')('back-end:server');
 const http = require('http');
 const config = require('../config')
 
+const ScanInterval = require("../models").scanInterval;
+
+
 /**
  * Get port from environment and store in Express.
  */
@@ -28,6 +31,7 @@ const server = http.createServer(app);
  */
 
 const initSocketIO = require("../socket")
+const {createTask} = require("../services/tasks");
 
 const io = socketIO(server, {
     cors: {
@@ -36,6 +40,7 @@ const io = socketIO(server, {
 })
 
 initSocketIO(io)
+config.SOCKET.io = io
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -47,12 +52,17 @@ async function start() {
             config.DATABASE.sequelize.sync()
         })
         .then(() => {
-            console.log(config.DATABASE.sequelize.models)
-        })
-        .then(() => {
             server.listen(port)
             server.on('error', onError)
             server.on('listening', onListening)
+        })
+        .then(() => {
+            ScanInterval.findOne({order: ['createdAt']})
+                .then(data => {
+                    if (data){
+                        createTask({interval: data.interval, cryptocurrency: 'bitcoin', io: io})
+                    }
+                })
         })
         .catch(err => {
             console.error(`Server starting error ${err}`)

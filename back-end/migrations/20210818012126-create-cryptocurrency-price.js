@@ -20,6 +20,9 @@ module.exports = {
       date: {
         type: Sequelize.DATE
       },
+      currency: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -6,29 +6,25 @@ const getPrice = ({slug}) => {
         method: 'GET',
         uri: config.COIN_MARKET_CAP_API.url,
         qs: {
-            'start': '1',
-            'limit': '5000',
-            'convert': 'USD',
-            'slug': slug
+            'slug': `${slug}`
         },
-        headers: config.COIN_MARKET_CAP_API.secretHeaders,
-        json: true,
-        gzip: true
+        headers: config.COIN_MARKET_CAP_API.secretHeaders
     }
     return rp(requestOptions)
         .then(response => {
-            return serializeResponse(JSON.stringify(response))
+            return serializeResponse(JSON.parse(response)["data"]["1"])
         })
         .catch(err => {
-            console.log(`api request error ${JSON.stringify(err)}`)
+            console.log(`${JSON.stringify(err)}`)
         })
 }
 
 const serializeResponse = responseJSON => {
     return {
-        currency: responseJSON.slug,
-        date: responseJSON.last_updated,
-        price: responseJSON.quote.USD.price
+        cryptocurrency: responseJSON["slug"],
+        price: responseJSON["quote"]["USD"]["price"],
+        currency: "USD",
+        date: responseJSON["quote"]["USD"]["last_updated"],
     }
 }
 

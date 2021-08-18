@@ -3,9 +3,13 @@ const ScanInterval = require('../models').scanInterval
 
 module.exports = {
     get:  (req, res, next) => {
+        if (!req.query['cryptocurrency'] || !req.query['currency']){
+            res.sendStatus(400)
+            return
+        }
         ScanInterval.findOne({order: ['createdAt'], attributes: ['interval']})
             .then(data => {
-                return data?.interval || 0
+                return data?.interval || null
             })
             .then(data => {
                 return {interval: data}
@@ -13,9 +17,11 @@ module.exports = {
             .then(({interval}) => {
                 return CryptocurrencyPrice.findAll({
                     where: {
-                        interval: interval || null,
-                        cryptocurrency: req.query['currency']
-                    }
+                        interval: interval,
+                        cryptocurrency: req.query['cryptocurrency'],
+                        currency: req.query['currency']
+                    },
+                    attributes: ['interval', 'price', 'currency', 'cryptocurrency', 'date']
                 }).then(data => {
                     return {interval: interval || 0, priceData: data}
                 })

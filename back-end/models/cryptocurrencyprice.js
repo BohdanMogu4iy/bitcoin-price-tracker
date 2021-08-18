@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.FLOAT,
     cryptocurrency: DataTypes.STRING,
     interval: DataTypes.INTEGER,
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+    currency: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'cryptocurrencyPrice',

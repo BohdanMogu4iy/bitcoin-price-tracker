@@ -20,7 +20,7 @@ const CryptocurrencyTracker = () => {
             type: ACTIONS.INTERVAL_UPDATE,
             data: e.target.value
         })
-        socketContext.emit(config.SOCKET.events.INTERVAL_UPDATE, {interval: e.target.value, currency: 'bitcoin'})
+        socketContext.emit(config.SOCKET.events.INTERVAL_UPDATE, {interval: e.target.value, cryptocurrency: 'bitcoin'})
     }
 
     return (

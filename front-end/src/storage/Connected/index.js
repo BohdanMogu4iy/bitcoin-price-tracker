@@ -3,6 +3,6 @@ export const ContextConnected = createContext();
 
 export const connectedInitialState = false;
 
-export const connectedReducer = state => {
-    return !state
+export const connectedReducer = (state, newState) => {
+    return newState
 }

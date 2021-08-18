@@ -6,8 +6,7 @@ import {
     ContextCryptocurrency
 } from "@storage/Cryptocurrency";
 import {ContextConnected} from "@storage/Connected";
-import {httpRequest} from "@utils/index";
-import {getCryptocurrencyData} from "@services/cryptocurrencyApi";
+import {getCryptocurrencyData} from "@services/cryptocurrencyAPI";
 
 
 const SocketHandler = ({children}) => {
@@ -20,31 +19,37 @@ const SocketHandler = ({children}) => {
             type: ACTIONS.INTERVAL_UPDATE,
             data: {interval}
         })
-    }
-
-    const priceUpdateHandler = async ({priceData}) => {
-        cryptocurrencyContext.dispatch({
-            type: ACTIONS.PRICE_UPDATE,
-            data: {priceData}
-        })
-    }
-
-    const connectedHandler = async () => {
-        await getCryptocurrencyData({currency: 'bitcoin'})
+        await getCryptocurrencyData({cryptocurrency: 'bitcoin', currency: 'USD'})
             .then(({priceData, interval}) => {
                 cryptocurrencyContext.dispatch({
                     type: ACTIONS.PRICE_DATA,
                     data: {priceData, interval}
                 })
-                console.log({priceData, interval})
+            })
+    }
+
+    const priceUpdateHandler = async ({priceData, interval}) => {
+        cryptocurrencyContext.dispatch({
+            type: ACTIONS.PRICE_UPDATE,
+            data: {priceData, interval}
+        })
+    }
+
+    const connectedHandler = async () => {
+        await getCryptocurrencyData({cryptocurrency: 'bitcoin', currency: 'USD'})
+            .then(({priceData, interval}) => {
+                cryptocurrencyContext.dispatch({
+                    type: ACTIONS.PRICE_DATA,
+                    data: {priceData, interval}
+                })
             })
             .then(() => {
-                connectedContext.dispatch()
+                connectedContext.dispatch(true)
             })
     }
 
     const connectErrorHandler = async () => {
-        connectedContext.dispatch()
+        connectedContext.dispatch(false)
     }
 
     useEffect(() => {
