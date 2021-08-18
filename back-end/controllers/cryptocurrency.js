@@ -7,7 +7,7 @@ module.exports = {
             res.sendStatus(400)
             return
         }
-        ScanInterval.findOne({order: ['createdAt'], attributes: ['interval']})
+        ScanInterval.findOne({order: [['createdAt', 'DESC']], attributes: ['interval']})
             .then(data => {
                 return data?.interval || null
             })
