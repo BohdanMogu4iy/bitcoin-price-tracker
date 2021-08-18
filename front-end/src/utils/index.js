@@ -20,3 +20,10 @@ export const httpRequest = ({url, method = "GET", params = null, data = null}) =
         ...requestOptions
     });
 };
+
+export const serializeCryptocurrencyData = ({date, price, currency}) => {
+    return {
+        price: `${price} ${currency}`,
+        date
+    }
+}

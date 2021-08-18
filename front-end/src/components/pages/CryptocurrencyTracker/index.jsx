@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext} from 'react'
 import ScanInterval from "@components/ScanInterval";
 import CryptocurrencyPriceTable from "@components/CryptocurrencyPriceTable";
 import {
@@ -8,6 +8,14 @@ import {
 import {ContextSocket} from "@storage/Socket";
 import config from "@config/index";
 import {ContextConnected} from "@storage/Connected";
+import {getCryptocurrencyData} from "@services/cryptocurrencyAPI";
+import {
+    Container,
+    ScanIntervalWrapper,
+    StyledPageHead,
+    StyledScanIntervalLabel,
+    TableWrapper
+} from "@pages/CryptocurrencyTracker/styled";
 
 
 const CryptocurrencyTracker = () => {
@@ -15,40 +23,52 @@ const CryptocurrencyTracker = () => {
     const socketContext = useContext(ContextSocket)
     const connectedContext = useContext(ContextConnected)
 
-    const changeHandler = e => {
+    const changeHandler = async e => {
         cryptocurrencyContext.dispatch({
             type: ACTIONS.INTERVAL_UPDATE,
             data: e.target.value
         })
-        socketContext.emit(config.SOCKET.events.INTERVAL_UPDATE, {interval: e.target.value, cryptocurrency: 'bitcoin'})
+        await socketContext.emit(config.SOCKET.events.INTERVAL_UPDATE, {
+            interval: e.target.value,
+            cryptocurrency: 'bitcoin'
+        })
+        getCryptocurrencyData({cryptocurrency: 'bitcoin', currency: 'USD'})
+        .then(({priceData, interval}) => {
+            cryptocurrencyContext.dispatch({
+                type: ACTIONS.PRICE_DATA,
+                data: {priceData, interval}
+            })
+        })
+
     }
 
     return (
-        <>
+        <Container>
             {
                 connectedContext.state ? (
                     <>
-                        <h1>
+                        <StyledPageHead>
                             CryptocurrencyTracker
-                        </h1>
-                        <div>
-                            <div>
-                                <p>Scan Interval</p>
+                        </StyledPageHead>
+                        <TableWrapper>
+                            <ScanIntervalWrapper>
+                                <StyledScanIntervalLabel>Scan Interval</StyledScanIntervalLabel>
                                 <ScanInterval
                                     changeHandler={changeHandler}
                                 />
-                            </div>
+                            </ScanIntervalWrapper>
                             <CryptocurrencyPriceTable/>
-                        </div>
+                        </TableWrapper>
+
                     </>
                 ) : (
-                    <h1>
+                    <StyledPageHead>
                         Connecting....
-                    </h1>
+                    </StyledPageHead>
                 )
             }
 
-        </>
+        </Container>
     )
 }
 
