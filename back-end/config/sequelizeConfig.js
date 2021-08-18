@@ -32,6 +32,7 @@ module.exports = {
         require: true,
         rejectUnauthorized: false, // <<<<<<< YOU NEED THIS TO FIX UNHANDLED REJECTION
       },
-    }
+    },
+    logging: false
   }
 };
